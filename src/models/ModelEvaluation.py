@@ -2,6 +2,8 @@ from pathlib import Path
 
 import pickle
 
+import json
+
 import pandas as pd
 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -36,14 +38,23 @@ rmse = mean_squared_error(y_test, y_pred) ** 0.5
 
 r2 = r2_score(y_test, y_pred)
 
+# Save evaluation metrics
+metrics = {
+    "MAE": float(mae),
+    "RMSE": float(rmse),
+    "R2": float(r2),
+}
+
+metrics_dir = Path("metrics")
+metrics_dir.mkdir(parents=True, exist_ok=True)
+
+with open(metrics_dir / "metrics.json", "w") as file:
+    json.dump(metrics, file, indent=4)
+
 # Display results
-
 print("Model Evaluation Results")
-
 print("------------------------")
-
 print(f"MAE:  {mae:.4f}")
-
 print(f"RMSE: {rmse:.4f}")
-
 print(f"R²:   {r2:.4f}")
+print("Metrics saved to: metrics/metrics.json")

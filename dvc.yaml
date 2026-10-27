@@ -1,0 +1,49 @@
+stages:
+  split_data:
+    cmd: uv run python -m src.data.DataSplitting
+    deps:
+      - src/data/DataSplitting.py
+    outs:
+      - data/processed_data/X_train.csv
+      - data/processed_data/X_test.csv
+      - data/processed_data/y_train.csv
+      - data/processed_data/y_test.csv
+
+  normalize_data:
+    cmd: uv run python -m src.data.DataNormalization
+    deps:
+      - src/data/DataNormalization.py
+      - data/processed_data/X_train.csv
+      - data/processed_data/X_test.csv
+    outs:
+      - data/processed_data/X_train_scaled.csv
+      - data/processed_data/X_test_scaled.csv
+
+  best_parameters:
+    cmd: uv run python -m src.models.bestParameters
+    deps:
+      - src/models/bestParameters.py
+      - data/processed_data/X_train_scaled.csv
+      - data/processed_data/y_train.csv
+    outs:
+      - models/best_params.pkl
+
+  train_model:
+    cmd: uv run python -m src.models.ModelTraining
+    deps:
+      - src/models/ModelTraining.py
+      - data/processed_data/X_train_scaled.csv
+      - data/processed_data/y_train.csv
+      - models/best_params.pkl
+    outs:
+      - models/trained_model.pkl
+
+  evaluate_model:
+    cmd: uv run python -m src.models.ModelEvaluation
+    deps:
+      - src/models/ModelEvaluation.py
+      - data/processed_data/X_test_scaled.csv
+      - data/processed_data/y_test.csv
+      - models/trained_model.pkl
+    metrics:
+      - metrics/metrics.json

@@ -35,10 +35,10 @@ output = Path("models")
 
 output.mkdir(parents=True, exist_ok=True)
 
-with open(output / "trained_model.pkl", "wb") as file:
+with open(output / "best_params.pkl", "wb") as file:
 
-    pickle.dump(grid.best_estimator_, file)
+    pickle.dump(grid.best_params_, file)
 
 print("Best parameters:", grid.best_params_)
 
-print("Saved to:", output / "trained_model.pkl")
+print("Saved to:", output / "best_params.pkl")
