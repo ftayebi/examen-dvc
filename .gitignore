@@ -1,2 +1,24 @@
-/venv
-/clean_data.csv
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# Local secrets
+.env
+.dvc/config.local
+
+# DVC cache
+.dvc/cache/
+
+# Raw and processed data
+/data/raw/
+/data/processed_data/
+
+# Generated model artifacts
+/models/*.pkl
+/models/*.joblib
